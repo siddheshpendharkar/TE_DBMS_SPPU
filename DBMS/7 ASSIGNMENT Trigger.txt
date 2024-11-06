@@ -1,0 +1,47 @@
+delimiter $ 
+create trigger t1 after insert on s1 for each row 
+begin 
+insert into s2 values(new.roll,new.name); 
+end; 
+$ 
+delimiter ; 
+delimiter $ 
+create trigger t2 after update on s1 for each row 
+begin 
+insert into s2 values(new.roll,old.name); 
+end; 
+$ 
+delimiter ; 
+delimiter $ 
+create trigger t3 after delete on s1 for each row 
+begin 
+insert into s2 values(old.roll,old.name); 
+end; 
+$ 
+delimiter ; 
+delimiter $ 
+create trigger t4 before insert on s1 for each row 
+begin 
+set new.percentage=(new.sub1+new.sub2)*100/200; 
+end; 
+$ 
+delimiter ; -- delimiter $ -- create trigger t5 before insert on s1 for each row -- begin -- if new.roll=11 then set new.roll=1; -- end if; -- insert into s2 values(new.roll,new.name); -- end; -- $ -- delimiter ; 
+delimiter $ 
+create trigger p2 before update on s1 for each row
+begin 
+if new.roll< 50 then 
+set new.roll = 49; 
+end if; 
+end; 
+$ 
+delimiter ;
+
+
+
+
+
+how to run
+1. CREATE TABLE s1(roll int, name VARCHAR(20));
+2. CREATE TABLE s2(roll int, name VARCHAR(20));
+3.source trigger.sql;
+4.select * from s2;

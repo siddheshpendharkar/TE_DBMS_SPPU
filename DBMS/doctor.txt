@@ -1,0 +1,32 @@
+1.SELECT d.Doctor_no, d.Doctor_name, h.Name AS Hospital_name
+FROM Doctor d
+JOIN Doc_Hosp dh ON d.Doctor_no = dh.Doctor_no
+JOIN Hospital h ON dh.Hospital_no = h.Hospital_no;
+
+
+2.SELECT DISTINCT d.Doctor_no, d.Doctor_name
+FROM Doctor d
+JOIN Doc_Hosp dh ON d.Doctor_no = dh.Doctor_no
+JOIN Hospital h ON dh.Hospital_no = h.Hospital_no
+WHERE d.City = h.City;
+
+3.SELECT h.Hospital_no, h.Name AS Hospital_name
+FROM Doctor d
+JOIN Doc_Hosp dh ON d.Doctor_no = dh.Doctor_no
+JOIN Hospital h ON dh.Hospital_no = h.Hospital_no
+WHERE d.Doctor_name = 'Dr. Joshi';
+
+
+4.SELECT COUNT(DISTINCT dh.Doctor_no) AS Doctor_count
+FROM Doc_Hosp dh
+JOIN Hospital h ON dh.Hospital_no = h.Hospital_no
+WHERE h.Name = 'Shree Clinic' AND dh.Date = '2023-03-01';
+
+5.SELECT COUNT(*) AS Visit_count
+FROM Doc_Hosp dh
+JOIN Doctor d ON dh.Doctor_no = d.Doctor_no
+JOIN Hospital h ON dh.Hospital_no = h.Hospital_no
+WHERE d.Doctor_name = 'Dr. Joshi' AND h.Name = 'Shree Clinic';
+
+
+

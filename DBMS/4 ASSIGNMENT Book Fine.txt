@@ -1,0 +1,34 @@
+Delimiter //
+create procedure BookFine(roll_new integer,book_name varchar(30))
+begin
+declare X integer;
+DECLARE CONTINUE HANDLER FOR NOT FOUND
+begin
+select CONCAT('ROLLNO', roll_new, ' NOT FOUND') as NoRecord;
+end;
+select datediff(curdate(),DateofIssue) into X from Borrower where Rollno=roll_new;
+if (X>15 && X<30) then
+insert into Fine values(roll_new,curdate(),(X*5));
+end if;
+if (X>30) then
+insert into Fine values(roll_new,curdate(),(X*50));
+end if;
+update Borrower set status='R' where Rollno=roll_new;
+end;
+//
+Delimiter ;
+
+
+
+
+
+
+
+HOW to run
+
+
+1.CREATE TABLE borrower(rollno INT,name VARCHAR(20),dateofissue date,nameofbook varchar(20),status varchar(10));
+2.CREATE TABLE fine(rollno INT , date date,amt INT);
+3.INSERT INTO borrower VALUES(1,"A","2024-10-01","DSA","I");
+4.source ass4.sql;
+5.call BookFine(1,"DSA");

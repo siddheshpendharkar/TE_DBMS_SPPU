@@ -1,0 +1,61 @@
+pr5a.sql
+
+
+
+Delimiter //
+CREATE PROCEDURE grade(IN newroll Integer)
+BEGIN
+DECLARE tmarks INTEGER;
+DECLARE sname varchar(25);
+DECLARE sresult varchar(25);
+DECLARE EXIT HANDLER FOR NOT FOUND
+BEGIN
+SELECT CONCAT('ROLLNO ', newroll, ' NOT FOUND') as NoRecord;
+END;
+SELECT Name, total_marks INTO sname, tmarks
+FROM studmarks
+WHERE roll = newroll;
+SET sresult = funcclass(tmarks);
+INSERT INTO result values(newroll,sname,sresult);
+END;
+//
+delimiter ;
+
+
+
+pr5b.sql
+
+
+Delimiter //
+CREATE FUNCTION funcclass(Marks Integer)
+RETURNS varchar(25) NO SQL
+BEGIN
+DECLARE S_result varchar(25);
+IF (Marks>=990 AND Marks<=1500) then
+SET S_result = 'DISTINCTION';
+ELSEIF (Marks>=900 AND Marks<=989) THEN
+SET S_result = 'FIRST CLASS';
+ELSEIF (Marks>=825 AND Marks<=899) THEN
+SET S_result = 'HIGHER SECOND CLASS';
+ELSE
+SET S_result = 'PASS CLASS';
+END IF;
+RETURN S_result;
+END;
+//
+Delimiter ;
+
+
+
+
+
+Hot to run
+
+
+
+1.CREATE TABLE studmarks(roll INT,name VARCHAR(20),total_marks INT);
+2.CREATE TABLE result(roll INT , name varchar(20),class varchar(20));
+3.source 5b.sql;
+4.source 5a.sql;
+5.INSERT INTO studmarks VALUES(1,"A",900);
+6. call grade(1);
